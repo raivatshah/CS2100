@@ -3,7 +3,7 @@
 
 ## Lecture 2 - Overview of C
 
-At the lowest level, hardwre components work on 2 states: On(1) & Off(0)/ So data & instructions must be in binary. 
+At the lowest level, hardwre components work on 2 states: On(1) & Off(0). So data & instructions must be in binary (0 or 1).
 
 **Different Languages**
 
@@ -17,14 +17,14 @@ If Source Lang = High-level lang, Translator = Compiler.
 
 **Life of a Program**
 
-*Compiled*: Editor &rarr; Compiler &rarr; Assembler &rarr; Linker &rarr; OS
-Entire prog compiled before executation into an executable. Just in Case execution. Eg for C/C++/Swift
+*Compiled*: Editor &rarr; Compiler &rarr; Assembler &rarr; Linker &rarr; OS.
+Entire prog compiled before executation into an executable. Just in Case (JIC) execution. Eg for C/C++/Swift
 
 *Interpreted*: Editor &rarr; Interpretor
-Compilation on the "fly." Executed statement by statement at Run Time. Just-in-Time execution. Eg for Python/JS. 
+Compilation on the "fly." Executed statement by statement at Run Time. Just-in-Time (JIT) execution. Eg for Python/JS. 
 
 *On a Virtual Machine*: Editor &rarr; Compiler &rarr; VM &rarr; OS
-Same as *Compiled* but compiled into an intermediate executable that runs on a VM. 
+Same as *Compiled* but compiled into an intermediate executable that runs on a VM, whose implementation can vary as per processor. Also JIC.
 
 ### The C Language - We follow ANSI C (C90)
 
@@ -52,7 +52,7 @@ Notes:
 
 * Each variable is stored in the memory (RAM), a long 1D array. 
 * Must be declared before use & data type specified at declaration. Data type decides type of value, size of value (no of bytes), & range of values (depends upon size)
-* Do not have an initial value.
+* Static (file scope & funciton static) are intialized to 0 but non-static (local variables) are *indeterminate*. Undefined behavior.
 
 | Data Type     |  32-bit processor | 64-bit processor  |
 | ------------- |:-------------:| -----:|
@@ -61,7 +61,7 @@ Notes:
 | `double` | 8 bytes      |    16 bytes |
 | `char` | 1 byte     |   1 byte |
 
-*Note* 1 `byte` = 8 `bits`. 1 `byte` can represent upto 2^numBits - 1 = 2^8 -1 = 255in base 10. So, for 4 byte `int`, the range is from [-2^31 to 2^31 - 1]. 
+*Note* 1 `byte` = 8 `bits`. 1 `byte` can represent upto 2^numbits - 1 = 2^8 -1 = 255$$ in base 10. So, for 4 byte `int`, the range is from [-2^31 to 2^31 - 1]. 
 
 Range Limitation:  
 ```c
@@ -73,7 +73,7 @@ int main()
     while(i > 0) {
         printf("%d", &i); //output will be 2147483647.
         i++;
-    } // loop will only run once.
+    } // loop will only run once as on next run it will be -2147483647.
 
     printf("%d", &i); //output will be -2147483647. 
 }
@@ -84,40 +84,53 @@ Accuracy Limitation:
 
 **C Type Conversion**
 
-*Hierarchy* `char` &rarr; `int` &rarr; `float` &rarr; `double`
+*Hierarchy* from least to most info: `char` &rarr; `int` &rarr; `float` &rarr; `double`
 
-Widening: going to right from left. No loss of information. Eg 1 to 1.00 
+Widening: going from left to right. No loss of information. Eg 1 to 1.00 
 
-Narrowing: going to left from right. Loss of info. Eg 1.7 to 1. 
+Narrowing: going from right to left. Loss of info. Eg 1.7 to 1. 
 
-Implicit: Performed automatically based on defined rules. 
+Implicit conversion: Performed automatically based on defined rules. 
 
-Explicit: Programmer decides data type change. 
+Explicit conversion: Programmer decides data type change. 
 
 *Rules for Implicit Conversion*
 
-Consider `A op B &rarr; C` (Arithmetic)
+Consider `A op B` &rarr; `C` (Arithmetic)
 
 * if A and B same type, then C also same type. Eg 5 + 6 = 11, 5 / 2 = 2
-* Else, lower data type promoted to higher (widening) and C is of the higher data type. Eg 3.0 * 4 = 12.0, 5 / 2.0 = 2.5. 
+* Else, lower data type promoted to higher (widening) and C is of the higher data type. Eg 3.0 * 4 = 3.0 * 4.0 = 12.0, 5 / 2.0 = 2.5. 
 
 Consider `A = B` (Assignment)
 
-B will be widened/narrowed based on data type of A. Think of this as `B` going into `A` so it must abide by `A`'s rules. 
+B will be widened/narrowed based on data type of A. Think of this as `B` going into the memory box that is A `A` so it must abide by `A`'s rules. 
 
 *Explicit Casting*
 
-Use (`data type`) + variable to convert explicitly. Eg (`double`) 2 &rarr; 2.0
+Use (`datatype`) + variable to convert explicitly. Eg (`double`) 2 &rarr; 2.0
+
+**Running a C Program**
+
+Program stored in `program.c`. First, compile the program into an executable:
+
+```shell
+gcc program.c -o program (-o is for specifing filename)
+```
+Run the program from the executable:
+
+```shell
+./filename
+```
 
 ## Lecture 3 - Data Representation & Number Systems
 
 **Different bases and conversions**
 
-Base 10 is only a way of representing powers of 10. Eg: 2915 = 5 x 10^0 + 1 x 10^1 + 9 x 10^2 + 2 x 10^3. 
+Base 10 (Regular numbers) is only a way of representing powers of 10. Eg: 2915 = 5 x 10^0 + 1 x 10^1 + 9 x 10^2 + 2 x 10^3. 
 
 We can have different bases too: 
 
-Base 10 &rarr; Denary, Base 2 &rarr; Binary, Base 8 &rarr; Octal, Base 16 &rarr; Hexadecimal. 
+Base 10 (Denary), Base 2 (Binary), Base 8 (Octal), Base 16 (Hexadecimal). 
 
 *Converting base R to base 10:*
 
@@ -134,11 +147,17 @@ Repeated division by powers of R less than the number in base 10 until remainder
 (89) base 10 to binary:
 
 89 / 64 = 1 remainder 25
+
 25 / 32 = 0 remainder 25 
+
 25 / 16 = 1 remainder 9
+
 9 / 8   = 1 remainder 1
+
 1 / 4   = 0 remainder 1
+
 1 / 2   = 0 remainder 1
+
 1 / 1   = 1 remainder 0
 
 Therefore, (89) base 10 = (1011001) base 2. 
@@ -172,7 +191,7 @@ Unsigned Numbers - Only non-negative values. Easily represented using simple bin
 
 Signed Numbers - Negative & Positive values. Need a representation. 
 
-##### Common Representations 
+##### Common Representations for Integers
 
 #### Sign-and-Magnitude
 
@@ -190,7 +209,9 @@ Sign-and-magnitude not very good with arithmetic operations.
 
 Complements are very good for subtraction and logical manipulations. 
 
-In *1s complement*, positive num X of binary stays X. However, -X becomes $$2^n - X - 1$$. To calculate, invert all bits. MSB indicates sign 
+In *1s complement*, positive num X of binary stays X. However, -X becomes 2^n - X - 1. To calculate, invert all bits. MSB indicates sign. 
+
+Eg x = 12, which in 8-bit binary is 0000 1100. 1's complement of it is obtained by inverting all bits: 1111 0011. This is the same as 2^8 - 12 - 1 = 243 in base 10.
 
 For n-bit 1s complement, range is [-2^n-1, 2^n-1]. There are 2 zeros (positive & negative). 
 
@@ -201,6 +222,8 @@ For subtraction: `A - B = A + (-B)`. Take 1s complement of B and add that to A.
 In *2s complement*, positive num X of binary stays X. However, -X becomes 2^n - X. To calculate, invert all bits (1s complement) and add 1 to the result. MSB indicates sign.
 
 For n-bit 2s complement, range of values is [-2^n-1, 2^n-1]. Only one zero. 
+
+Eg x = 12, which in 8-bit binary is 0000 1100. 2's complement of it is obtained by inverting all bits and adding 1: 1111 0100. This is the same as 2^8 - 12 = 244 in base 10.
 
 For addition: `A + B`. Perform binary addition. Ignore carry of MSB. Check for overflow (when carry in is not equal to carry out or when signs are different)
 
@@ -215,6 +238,8 @@ Eg find the 1's complement of 0110 is 1001.
 
 Eg find the 1's complement of 101 [8 bit], is 100000000 - 101 - 1 = 11111010.
 
+**Integers in C use 2s complement so it is very important**
+
 #### Excess-K Representation
 
 Use a simple translation to represent a number X. Add K to X, then represent result in binary. K = bias/offset. There is no standard for offset binary, but most often the offset K for an n-bit binary word is K = 2n−1. Primarily used for the exponent of floating-point numbers.
@@ -225,15 +250,29 @@ Eg 7 in Excess-8 is 7+8 = 15 = 1111 (base 2)
 
 Binary point may be at any pre-fixed location. Allow us to represent very large or very small values. 
 
-Commonly Used Format: IEEE 754 
-
-For Single-precision floating point number on a 32-bit platform:
+Commonly Used Format: IEEE 754. For Single-precision floating point number on a 32-bit platform:
 
 1 bit for Sign - 8 bits for Exponent (Excess-127) - 23 Bits for Fraction/Mantissa. Normalized to 1.X and take X only. Example:
 
-(-39.625) &rarr; (-100111.101) base 2 &rarr; (-1.0011101) x 2^5 (normalization)
+(-39.625) &rarr; (-100111.101) base 2 &rarr; (-1.0011101) x 2^5 (normalization by bringing radix point to left)
 
 Therefore, sign = 1 (negative), exponent = (5 + 127 = 132 &rarr; 1000 0100), fraction = (0011101). 
+
+*Decimal Fraction to Binary*
+
+Eg -3.703125 (base 10) to binary. 1st convert integer part and then fractional part
+
+-3 = -11 (base 2). For fractional part:
+
+0.703125 * 2 = 1.40625 &rarr; store 1
+
+0.40625 * 2 = 0.8125 &rarr; store 0 
+
+0.8125 * 2 = 1.625 &rarr; store 1
+
+... continue until the precision you want/fraction part becomes 0. Number in binary is -11.101...
+
+*Tutorial 1 also looked at 64 bit IEEE 754 floating point:* 1 sign bit, 11 exp and 52 fraction. Bias for exponent is 1023.
 
 **Characters**
 
@@ -242,15 +281,17 @@ Includes printable (eg A, B, ...) & non-printable (eg NULL, bell, tab, return)
 Old: ASCII 8 bit sequence for representing 255 characters
 New: UNICODE. Encoding schemes for backward compatibility. 
 
+Take up 1 byte in C
+
 ## Lecture 4 - Function & Pointer
 
 **C Functions**
 
 Large program should be modular. Function allows better maintenance and reusability. Sample func header:
 
-`int sum(int x, int y)` Includes input and its type, return type and the name. 
+`int sum(int x, int y)` Includes input and its type, return type and the name of function. 
 
-Function can return atmost 1 result directly. Variables declared in function is only alive and visible in that function. 
+Function can return atmost 1 result directly. Variables declared in function are only alive and visible in that function. 
 
 Actual arguments in a function call have a 1-to-1 correspondence with the formal parameters declarated in function header. Eg `sum(3, 4)` implies `x = 3, y = 4` in the above example. 
 
@@ -278,7 +319,7 @@ ptr2 = ptr; //ptr2 also points to int x now.
 **C variable Passing**
 
 Two ways to pass a param into a func:
-* Pass by value (cannot mutate outside function call. Simple data types and structures are passed by value).
+* Pass by value (cannot mutate outside function call. Simple data types and structures are passed by value). Arguments values are *copied*
 * Pass by address/pointer (can mutate outside function call, that's why use it for `scanf`. Requires caller to pass address using `&`. Arrays are passed by address. 
 
 **C Library**
@@ -357,29 +398,29 @@ struct Fraction{ //structure declaration. Essentially a new data type.
     int den;
 }; //this is just a declaration. No actual variable is allocated.
 
-int main{
+int main(){
 
-    struct Fraction frac1 = { 0 } // use new data type to declare a Fraction structure.
+    struct Fraction frac1 = { 0 }; // use new data type to declare a Fraction structure.
     frac1.num = 9// change num to 9
     frac1.den = 10 //change den to 10
 
     return 0 //always return 0.
 }
 ```
-Dereferencing a structure: `(&fptr).num is the same as ftpr&rarr;num`. Structure can have structure as a field. Can have array of structures or have array as field. 
+Dereferencing a structure: `(&fptr).num is the same as ftpr`&rarr;`num`. Structure can have structure as a field. Can have array of structures or have array as field. For printing, just refer to `frac1.num`.
 
 ## Lecture 7 - MIPS Introduction
 
 How C files are compiled: `gcc -v hello.c` 
 
 How C files are executed: `./hello`
-e
+
 
 **Assembly Code**
 
-Symbolic version of machine code, human readable. Assembler translates further from assembly langugae to machine code. Assembly can provide pseudo-instructions as syntactic sugar for complext instructions. When considering performance, only real instructions are counted. 
+Symbolic version of machine code, human readable. Assembler translates further from assembly langugae to machine code. Assembly can provide pseudo-instructions as syntactic sugar for complex instructions. When considering performance, only real instructions are counted. 
 
-*Instruction Set Architecture*: A subpart of computer architecture that is related to programming, as seen by the programmer and compiler. Exponses the capabilities of the underlying processor as a set of well defined instructions (something like an API for the processor). Thus, ISA is an interface between software and hardware, and serves as an abstraction barrier which allows freedom in hardware implementation. 
+*Instruction Set Architecture*: A subpart of computer architecture that is related to programming, as seen by the programmer and compiler. Exposes the capabilities of the underlying processor as a set of well defined instructions (something like an API for the processor). Thus, ISA is an interface between software and hardware, and serves as an abstraction barrier which allows freedom in hardware implementation. x
 
 Examples of ISA: x86-64 (mostly used in PCs), MIPS (used for study purposes), ARM (used in embedded system chip for mobile devices). If a chip follows a certain ISA, it has all the functions guaranteed by the ISA. Program compiled for ISA can run on any of the "family of chips" under the ISA. 
 
