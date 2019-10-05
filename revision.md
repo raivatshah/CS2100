@@ -515,17 +515,17 @@ Consider `$s0` = 8000.
 
 `lw $t0, 4($s0)` loads the word stored at `0` byte-offset from address in `$s0` into register `$t0`. 
 
-`$t0` now stores the word stored at `Mem[8004]`. So, `$t0` stores bytes in 8004, 8005, 8006, 8007. 
+`$t0` now stores the word stored at `Mem[8004]` (add offset of 4 to the addresS). So, `$t0` stores bytes in 8004, 8005, 8006, 8007. 
 
 *Store Word* - From Register to Memory
 
 Consider `$s0` = 8000.
 
-`sw $t0, 4($s0)` stores the word store in `$t0` to the address that is `4` bytes away from the address stored in `$s0`. 
+`sw $t0, 4($s0)` stores the word stored in `$t0` to the address that is `4` bytes away from the address stored in `$s0` (`Mem[8004]`).
 
 Note that byte-offset is given in decimal. We have equivalent instructions like `lb` (load byte) and `sb` (store byte).
 
-*Word Alginment*: Words are aligned if they begin at a byte address that is a multiple of the number of bytes in a word. 
+*Word Alignment*: Words are aligned if they begin at a byte address that is a multiple of the number of bytes in a word. 
 
 Intuitively, MIPS doesn't allow using `sw` and `lw` on unaligned words. For that, pseudo-instructions such as unaligned load word and unaligned store word exist. 
 
