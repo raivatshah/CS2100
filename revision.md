@@ -3,7 +3,7 @@
 
 ## Lecture 2 - Overview of C
 
-At the lowest level, hardwre components work on 2 states: On(1) & Off(0). So data & instructions must be in binary (0 or 1).
+At the lowest level, hardware components work on 2 states: On(1) & Off(0). So data & instructions must be in binary (0 or 1).
 
 **Different Languages**
 
@@ -45,14 +45,14 @@ Notes:
 
 1. All code resides within a function. So a `.c` program is just a bunch of funcs.
 2. Program starting point is always the `main` function, which always returns `0`.
-3. `#include<stdio.h>` is a pre-processor directive. Means add the file `stdio.h` for compilation. Now can use code from that file, eg `printf`. Can define global constants using `#` also. 
-4. C is case sensitive and a statement is equivalent to a step in an algorithm. 
+3. `#include<stdio.h>` is a pre-processor directive. Means add the file `stdio.h` for compilation. Now can use code from that file, eg `printf`. Can define global constants using `#` also. Eg `#define radius 2`
+4. C is case sensitive and a C statement is equivalent to a step in an algorithm. 
 
 **C Variables**
 
 * Each variable is stored in the memory (RAM), a long 1D array. 
 * Must be declared before use & data type specified at declaration. Data type decides type of value, size of value (no of bytes), & range of values (depends upon size)
-* Static (file scope & funciton static) are intialized to 0 but non-static (local variables) are *indeterminate*. Undefined behavior.
+* Static (file scope & funciton static) variables are intialized to 0 but non-static (local variables) are *indeterminate*. Undefined behavior.
 
 | Data Type     |  32-bit processor | 64-bit processor  |
 | ------------- |:-------------:| -----:|
