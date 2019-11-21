@@ -1,5 +1,25 @@
-# CS2100 (AY19/20 Sem 1) Revision Notes for Mid Term
+# CS2100 (AY19/20 Sem 1 by Uncle Soo) Revision Notes
 #### Prepared by Raivat Shah 
+
+## Lecture 1 - Introduction 
+
+Most Car Drivers do not need to understand the car inside-out; But, Race car drivers do! (Uncle Soo, 2019)
+
+![comp-org](assets/computer.png)
+
+Abstractions are a key idea in Computing. A single layer will omit unnecessary details about a higher level and present a simple interface. Eg a High Level language doesn't worry about how the machine is actually implemented (eg Python).
+
+The domain of CS2100 (in parts 1 and part 2)
+
+![2worlds](assets/2worlds.png)
+
+Why learn Comp Org: call yourself a Computer Scientist, Build software people use, make purchase decisons, and offer expert advice.
+
+Algorithms determine number of source-level abstractions 
+
+Language, compiler and architecture determine machine instructions
+
+Processor and memory determine how fast instructions are executed
 
 ## Lecture 2 - Overview of C
 
