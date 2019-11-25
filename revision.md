@@ -23,17 +23,19 @@ Processor and memory determine how fast instructions are executed
 
 ## Lecture 2 - Overview of C
 
-At the lowest level, hardware components work on 2 states: On(1) & Off(0). So data & instructions must be in binary (0 or 1).
+At the lowest level, hardware components work on 2 states: On(1) & Off(0). So data & instructions must be in binary (0 or 1) [Machine Language].
 
 **Different Languages**
 
 Natural Language (Easiest to express) &rarr; High-Level Language (eg C/Python) &rarr; Assembly Language (eg MIPS) &rarr; Machine Code (eg 0xAAAABBBB, closest to hardware)
 
-**Translater**
+**Translater** (like a math function)
 
 Source Lang &rarr; Translater &rarr; Target Lang
 
 If Source Lang = High-level lang, Translator = Compiler. 
+
+**Interpreter** Both translates and executes a source program
 
 **Life of a Program**
 
@@ -48,7 +50,7 @@ Same as *Compiled* but compiled into an intermediate executable that runs on a V
 
 ### The C Language - We follow ANSI C (C90)
 
-General Purpose PL developed in 1972 by Dennis Richie for use with UNIX Operating System. Provides only a min core mechanism. Exposes underlying machine model while still being portable. Assumes Programmer Knows best. Procedural in Nature. Very efficient in execution speed and memory footprint. 
+General Purpose PL developed in 1972 by Dennis Richie for use with UNIX Operating System. Provides only a minimal core mechanism. Exposes underlying machine model while still being portable. Assumes Programmer Knows best. Procedural in Nature. Very efficient in execution speed and memory footprint. 
 
 Sample C program:
 
@@ -98,7 +100,7 @@ int main()
     printf("%d", &i); //output will be -2147483647. 
 }
 ```
-After hitting the maximum number, C variables will "go back" to the 0, something like a clock or the `modulo` operator in math. Note that need to *dereference* variable with a pointer to refer to it.
+After hitting the maximum number, C variables will "go back" to the 0, something like a clock or the `modulo` operator in math. Note the need to *dereference* variable with a pointer to refer to it.
 
 Accuracy Limitation: 
 
@@ -134,7 +136,7 @@ Use (`datatype`) + variable to convert explicitly. Eg (`double`) 2 &rarr; 2.0
 Program stored in `program.c`. First, compile the program into an executable:
 
 ```shell
-gcc program.c -o program (-o is for specifing filename)
+gcc program.c -o program (-o is for specifing output filename)
 ```
 Run the program from the executable:
 
@@ -148,9 +150,7 @@ Run the program from the executable:
 
 Base 10 (Regular numbers) is only a way of representing powers of 10. Eg: 2915 = 5 x 10^0 + 1 x 10^1 + 9 x 10^2 + 2 x 10^3. 
 
-We can have different bases too: 
-
-Base 10 (Denary), Base 2 (Binary), Base 8 (Octal), Base 16 (Hexadecimal). 
+We can have different bases too: Base 10 (Denary), Base 2 (Binary), Base 8 (Octal), Base 16 (Hexadecimal). 
 
 *Converting base R to base 10:*
 
@@ -185,7 +185,7 @@ Therefore, (89) base 10 = (1011001) base 2.
 *Base K to Base J*, use 10 as a "bridge." Shortcut exists between base 2 to base 8/base 16. 
 
 For Base 2 and Base 8: 
-Every 3 digits of binary represent 1 digit of Octoal. Eg Binary 111 is Octal 7. Binary (00)1000001 in Binary is 101 in Octal. In general, group bits of Binary into triplets for the conversion. 
+Every 3 digits of binary represent 1 digit of Octoal. Eg Binary 111 is Octal 7. Binary (001)(000)(001) is (101) in Octal. In general, group bits of Binary into triplets for the conversion. 
 
 For Base 2 and Base 16:
 Every 4 digits of binary represent 1 digit of Hexadecimal. Eg Binary 1111 is Hexadecimal F (15). Binary (0)1000001 in Binary is 41 in Hexadecimal. In general, group bits of Binary into quadruplets for the conversion. 
@@ -219,7 +219,7 @@ Sign represented by a 'sign-bit' - the most significant bit. 0 for positive, 1 f
 
 | sign |   | digit | | digit | | digit | | digit | | digit | | digit | | digit |
 
-Representation range from -127 to 127 (inclusive in base 10)
+Representation for 8 bit ranges from -127 to 127 (inclusive in base 10)
 
 For n-bit sign-and-magnitude representation, range of values is [-2^n-1, 2^n-1]. Only one zero. 
 
@@ -241,7 +241,7 @@ For subtraction: `A - B = A + (-B)`. Take 1s complement of B and add that to A.
 
 In *2s complement*, positive num X of binary stays X. However, -X becomes 2^n - X. To calculate, invert all bits (1s complement) and add 1 to the result. MSB indicates sign.
 
-For n-bit 2s complement, range of values is [-2^n-1, 2^n-1]. Only one zero. 
+For n-bit 2s complement, range of values is [-2^n, 2^n-1]. Only one zero. 
 
 Eg x = 12, which in 8-bit binary is 0000 1100. 2's complement of it is obtained by inverting all bits and adding 1: 1111 0100. This is the same as 2^8 - 12 = 244 in base 10.
 
@@ -256,7 +256,7 @@ Can extend idea of complement to fraction. Eg 0101.01's 1s complement is 1010.10
 
 Eg find the 1's complement of 0110 is 1001. 
 
-Eg find the 1's complement of 101 [8 bit], is 100000000 - 101 - 1 = 11111010.
+Eg find the 1's complement of 101 (base 10) in 8 bit, is 100000000 - 101 - 1 = 11111010.
 
 **Integers in C use 2s complement so it is very important**
 
@@ -301,7 +301,7 @@ Includes printable (eg A, B, ...) & non-printable (eg NULL, bell, tab, return)
 Old: ASCII 8 bit sequence for representing 255 characters
 New: UNICODE. Encoding schemes for backward compatibility. 
 
-Take up 1 byte in C
+Take up 1 byte in C and most programming languages
 
 ## Lecture 4 - Function & Pointer
 
@@ -319,7 +319,7 @@ Single value returned by the function replaces the function call and can be user
 
 **C Pointers**
 
-A variable in C is essentially a location in memory that holds a value. Each location has a unique address and locations are arranged consecutively (recall memory is a long 1D array). Compiler handles laying out of variables. 
+A variable in C is essentially a location in memory that holds a value. Each location has a unique address and locations are arranged consecutively (recall memory is a long 1D array). Compiler handles laying out of variables in the 1D array.
 
 `int x = 123` &rarr; name = x, content = 123, address = 0x4096034A (example)
 
@@ -420,7 +420,7 @@ struct Fraction{ //structure declaration. Essentially a new data type.
 
 int main(){
 
-    struct Fraction frac1 = { 0 }; // use new data type to declare a Fraction structure.
+    struct Fraction frac1 = { 0 }; // use new data type to declare a Fraction structure. Num and den both zero.
     frac1.num = 9// change num to 9
     frac1.den = 10 //change den to 10
 
@@ -440,7 +440,7 @@ How C files are executed: `./hello`
 
 Symbolic version of machine code, human readable. Assembler translates further from assembly langugae to machine code. Assembly can provide pseudo-instructions as syntactic sugar for complex instructions. When considering performance, only real instructions are counted. 
 
-*Instruction Set Architecture*: A subpart of computer architecture that is related to programming, as seen by the programmer and compiler. Exposes the capabilities of the underlying processor as a set of well defined instructions (something like an API for the processor). Thus, ISA is an interface between software and hardware, and serves as an abstraction barrier which allows freedom in hardware implementation. x
+*Instruction Set Architecture*: A subpart of computer architecture that is related to programming, as seen by the programmer and compiler. Exposes the capabilities of the underlying processor as a set of well defined instructions (something like an API for the processor). Thus, ISA is an interface between software and hardware, and serves as an abstraction barrier which allows freedom in hardware implementation. 
 
 Examples of ISA: x86-64 (mostly used in PCs), MIPS (used for study purposes), ARM (used in embedded system chip for mobile devices). If a chip follows a certain ISA, it has all the functions guaranteed by the ISA. Program compiled for ISA can run on any of the "family of chips" under the ISA. 
 
@@ -496,9 +496,9 @@ Logical Operations: View 32 bit number not as whole but 32 different bits. MIPS 
 | ------------- |:-------------:| :-----:|  :-----:|
 | Addition     | `add $s0, $s1, $s2` | `addi $s0, $s1, 5` | To add two registers or a register and an immediate.
 | Subtraction   | `sub  $s0, $s1, $s2`   |  No `subi`. Use `addi` | To subtract two register values.
-| Shift Left Logical | `sll  $s0, $s1, 1`     |    |   Shift bits to left & fill the emptied positions with zeroes. Equivalent to multiplication by a power of 2, eg 2^1. 
-| Shift Right Logical | `srl  $s0, $s1, 1`   |   | Shift bits to right & fill the emptied positions with zeroes. Equivalent to division by a power of 2, eg 2^1. 
-| AND bitwise | 1`and $t0, $t1, $t2`   | `andi $s0, $s1, C16` | Bitwise AND of each bit. Used for masking operation: place 0s into positions to be ignored, 1s into interested positions
+| Shift Left Logical | `sll  $s0, $s1, 1`     |    |   Shift bits to left & fill the emptied positions with zeroes. Equivalent to multiplication by a power of 2, eg 2^1, for unsigned numbers only.
+| Shift Right Logical | `srl  $s0, $s1, 1`   |   | Shift bits to right & fill the emptied positions with zeroes. Equivalent to division by a power of 2, eg 2^1, for unsigned numbers only.
+| AND bitwise | `and $t0, $t1, $t2`   | `andi $s0, $s1, C16` | Bitwise AND of each bit. Used for masking operation: place 0s into positions to be ignored, 1s into interested positions
 | OR bitewise | `or $t0, $t1, $t2`   | `ori  $s0, $s1, C16`  | Bitwise OR of each bit. Can be used to force certain bits to 1s
 | NOR bitewise | `nor $t0, $t1, $t2`  |  | No `NOT` operation in MIPS, but use `NOR` to get it 
 | XOR bitewise | `xor $t0, $t1, $t2`  |  `xori $s0, $s1, C16` | Can also get `NOT` using this. 
@@ -509,6 +509,7 @@ To load a 32-bit constant into a register, eg 10101010 10101010 11110000 1111000
 lui	$t0, 0xAAAA # Set upper 16 bit. Lower bits filled with 0s by default.
 ori	$t0, $t0, 0xF0F0 # Set lower 16 bits. 
 ```
+(hack because MIPS immediate instructions can only accomodate upto 16 bit immediate val)
 
 ## Lecture 8 - Memory & Branch
 
@@ -972,6 +973,92 @@ WB Stage: In beginning, `MEM/WB` register supplies ALU result, memory read data 
 Pipeline control: same control signals as single-cycle datapath. Different is that each control signal belongs to a particular pipeline stage. Idea is to only pass on what is needed. 
 
 ![grp-control](assets/group-control.png)
+
+### CS2100 Part B starts here
+
+## Lecture 12 - Caching (Direct Map)
+
+Instruction and Data memory are actually not part of the processor, but live in the segment called "memory", as shown below
+
+![lec121](assets/lec121.png)
+
+**Volatile Memory** -> loses info w/o electrical power eg RAM. Stores temporary info
+
+**Non-Volatile Memory** -> can store info w/o electrical power eg HDD, SSD, ROM. Stores only persistent info eg files. 
+
+Current Dynamic RAM (DRAM) tech is Double Data Rate Synchronous Dynamic RAM (DDR SDRAM). 1 transitor + 1 capacitor per memory cell. High density so can store lots of bits in one area. 
+
+Processor-DRAM performance gap: processor takes 1 ns per clock cycle, DRAM takes 50 processor clock cycles!!! 
+
+Faster memory: SRAM. Low density. Access speed very fast but can't store a lot. 
+
+Trade off between memory access speed and memory size. 
+
+![tradeoff](assets/tradeoff.png)
+
+How to get a best of both worlds? 
+
+Idea: use a hierarchy of memory tech- small but fast memory near CPU, large but slow memory away from CPU. This is because smaller information is usually frequently accessed. 
+
+Introduce Cache in the Computer Ecosystem
+
+![cache](assets/cache.png)
+
+*Idea of Cache:* Keep Frequently used data in smaller but faster memory. Refer to slow/big memory only when cannot find in faster memory. Acts as a buffer between CPU and RAM
+
+Why it works? Principle of Locality: Program accesses only a small portion of the memory address space within a small time period (No random access). 
+
+Types of Locality:
+
+1. Temporal Locality: if an item is referenced, it will be referenced soon again. Eg a counter variable in a loop (accessed in every iteration)
+
+2. Spatial Locality: if an item is referenced, items near it will be referenced soon. Eg an array item. 
+
+Cache Usage & Terminology:
+
+Cache Hit -> When item you're looking for it found in the shorter memory (cache). Data is returned to the processor from the cache.  Ideal case
+
+Cache Miss -> When item you're looking for it not found in the shorter memory. Data is loaded from memory and placed in cache (which addresses temporal locality) for future reference. Not ideal as incurs full memory latency 
+
+Cache Block/Line -> Unit of transfer between memory and cache 
+
+Block size is usually more than 1 word. 16 byte block has 4 words as 1 word has 4 bytes. 
+
+Arrangement of Blocks in Memory:
+
+1. 2^N-byte blocks are aligned at 2^N-byte boundaries
+2. The addresses of words within a 2^N-byte block have identical (32-N) most significant bits (MSBs)
+3. [31:N] -> block number
+4. [N-1:0] -> byte offset 
+
+Direct Map Cache:
+
+Clearly, set of blocks to be stored in cache is greater than the capacity of the cache. Thus, we use a mapping function to map the set of blocks to set of cache indexes
+
+*Cache Index = Block_number mod (Num Cache Block)*
+
+This is intuitive: we will divide the set of blocks into equivalent groups (class). 
+
+So the output of cache index will be the remainders possible when the block num is divided by num cache blocks. 
+
+If num cache blocks is 2^M, last M-bits of block number is the cache index
+
+Multiple blocks may map to the same index, but they have a unique tag number which is nothing but the remaining of the block number (except for the first M-bits that determine cache index). 
+
+Tag = Block number / num cache blocks 
+
+Cache Structure: 
+
+![cache-structure](assets/cache-structure.png)
+
+Cache Hit occurs when Valid[index] == True AND (Tag[index] == Tag[memory address])
+
+Index can be found from the memory address/block number itself.
+
+
+
+
+
 
 
 
