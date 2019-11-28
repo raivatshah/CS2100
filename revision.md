@@ -534,7 +534,7 @@ MIPS is a load-store register architecture:
 
 Consider `$s0` = 8000. 
 
-`lw $t0, 4($s0)` loads the word stored at `0` byte-offset from address in `$s0` into register `$t0`. 
+`lw $t0, 4($s0)` loads the word stored at `4` byte-offset from address in `$s0` into register `$t0`. 
 
 `$t0` now stores the word stored at `Mem[8004]` (add offset of 4 to the addresS). So, `$t0` stores bytes in 8004, 8005, 8006, 8007. 
 
@@ -542,7 +542,7 @@ Consider `$s0` = 8000.
 
 Consider `$s0` = 8000.
 
-`sw $t0, 4($s0)` stores the word stored in `$t0` to the address that is `4` bytes away from the address stored in `$s0` (`Mem[8004]`).
+`sw $t0, 4($s0)` stores the word stored in `$t0` to the address that is `4` bytes away from the address stored in `$s0` (`Mem[8000]`).
 
 Note that byte-offset is given in decimal. We have equivalent instructions like `lb` (load byte) and `sb` (store byte).
 
